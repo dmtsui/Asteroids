@@ -52,3 +52,12 @@ Bullet.prototype.calcDist = function(asteroid){
   return Math.sqrt(Math.pow(this.center[0] - asteroid.center[0], 2) +
   				   Math.pow(this.center[1] - asteroid.center[1],2));
 }
+
+Bullet.prototype.draw = function(){
+  this.game.ctx.fillStyle = this.color;
+  this.game.ctx.beginPath();
+  this.game.ctx.arc(this.center[0], this.center[1],
+                    this.radius, 0, 2 * Math.PI, false);
+  this.game.ctx.fill();
+  this.update();
+}

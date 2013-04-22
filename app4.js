@@ -4,6 +4,14 @@ var rand = function(max, min) {
 	var min = min || 0;
     return Math.floor(Math.random() * (max-min)+1) + min;
 }
+
+var stars = new Image();
+stars.src = "img/stars.jpg";
+var asteroidImage = new Image();
+asteroidImage.src = 'img/asteroid.png';
+var spaceshipImage = new Image();
+spaceshipImage.src = 'img/spaceship.png';
+
 $(function(){ 
 	
 	game = new Game([800,500]);
@@ -51,25 +59,52 @@ function Game(canSize) {
 	this.bullets = [];
 	this.ship = new SpaceShip(this);
 	this.addAsteroids(5);
+	this.countDown = 3;
+	this.countDownTime = new Date();
 }
 
-Game.prototype.calcTime = function(){
-	var now = new Date();
-	return (now.getTime() - this.startTime.getTime())/1000;
+Game.prototype.levelCountDown = function(){
+	if(this.countDown > 0){
+		var milliseconds = this.calcTime(this.countDownTime);
+		var text = this.countDown;
+		this.ctx.fillStyle = "white";
+		this.ctx.font = (24+ Math.floor( (milliseconds % 1)*30))+"pt Arial";	
+		this.ctx.fillText(text, this.canSize[0]/2,this.canSize[1]/2);
+		if (milliseconds > 1){
+			this.countDown--
+			this.countDownTime = new Date();	
+		}
+
+	}
+	
 }
+
+Game.prototype.calcTime = function(time){
+	time = time || this.startTime;
+	var now = new Date();
+	return (now.getTime() - time.getTime())/1000;
+}
+
 
 Game.prototype.draw = function(){
   this.ctx.clearRect(0,0,this.canSize[0],this.canSize[1]);
-  this.ctx.fillStyle = "rgb(200,200,200)";
-  this.ctx.fillRect(0,0,this.canSize[0],this.canSize[1]);
+  this.ctx.drawImage(stars,0,0,this.canSize[0],this.canSize[1]);
   this.asteroids.forEach(function(el){
     el.draw();
   });
   
-  if (this.asteroids.length === 0){
-	  this.level++;
-	  this.addAsteroids(this.level + this.baseAsteroid);
+  if (this.asteroids.length === 0 && this.countDown === 0){
+	  this.countDown = 3;
+	  this.countDownTime = new Date();
+	  var that = this;
+	  _.delay(function(){
+		  that.level++;
+		  that.addAsteroids(that.level + that.baseAsteroid);
+	  },3000)
   }
+  
+ 
+  
   
   this.timerDisplay.text(this.calcTime());
   
@@ -86,6 +121,7 @@ Game.prototype.draw = function(){
   }
   this.ship.input();
   this.ship.draw();
+  if(this.countDown > 0) { this.levelCountDown(); }
   this.gameOver();
 }
 

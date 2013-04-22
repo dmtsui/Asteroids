@@ -5,6 +5,7 @@ function SpaceShip(game){
   this.center = [400,250];
   this.speed = 1;
   this.radius = 10;
+  this.sSize = 30;
 
 }
 
@@ -13,16 +14,17 @@ SpaceShip.prototype.draw = function(){
   this.adjustBounds();
   this.game.ctx.translate(this.center[0]+= this.vel[0], this.center[1] += this.vel[1]);
   this.game.ctx.rotate(this.direction * Math.PI/180);
-  this.game.ctx.fillStyle = "black";
-	this.game.ctx.beginPath();
-	this.game.ctx.moveTo(0, 0);
-	this.game.ctx.lineTo(-12, 15);
-	this.game.ctx.lineTo(0, - 18);
-	this.game.ctx.lineTo(12, 15);
-	this.game.ctx.lineTo(0, 0);
-	this.game.ctx.fill();
-	this.game.ctx.stroke();
-	this.game.ctx.closePath();
+  this.game.ctx.drawImage(spaceshipImage,-this.sSize ,-this.sSize , this.sSize *2, this.sSize *2);
+  // this.game.ctx.fillStyle = "yellow";
+ // 	this.game.ctx.beginPath();
+ // 	this.game.ctx.moveTo(0, 0);
+ // 	this.game.ctx.lineTo(-12, 15);
+ // 	this.game.ctx.lineTo(0, - 18);
+ // 	this.game.ctx.lineTo(12, 15);
+ // 	this.game.ctx.lineTo(0, 0);
+ // 	this.game.ctx.fill();
+ // 	this.game.ctx.stroke();
+ // 	this.game.ctx.closePath();
   this.game.ctx.restore();
 }
 
@@ -71,5 +73,4 @@ SpaceShip.prototype.input = function() {
     if (keyMap[38] === true){ this.accelerate(); }
 	if (keyMap[37] === true){ this.direction -= 10; }
 	if (keyMap[39] === true){ this.direction += 10; }
-	
 }
