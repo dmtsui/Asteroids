@@ -11,12 +11,16 @@ var asteroidImage = new Image();
 asteroidImage.src = 'img/asteroid.png';
 var spaceshipImage = new Image();
 spaceshipImage.src = 'img/spaceship.png';
+var explosionImage = new Image();
+explosionImage.src = 'img/explosion.png';
+
+var frameRate = 25;
 
 $(function(){ 
 	
-	game = new Game([800,500]);
+	game = new Game([900,600]);
 
-	game.play = window.setInterval(function(){game.draw()},33);
+	game.play = window.setInterval(function(){game.draw()}, frameRate);
 
 	$("body").keydown(function(e) {
 	keyMap[e.keyCode] = true;
@@ -29,7 +33,7 @@ $(function(){
 	  clearInterval(game.play);
 	  break;
 	case 87:
-	  game.play = window.setInterval(function(){game.draw()},33);
+	  game.play = window.setInterval(function(){game.draw()}, frameRate);
 	  break;
 	default:
 	  console.log(e.keyCode);
@@ -43,7 +47,6 @@ $(function(){
 
 
 function Game(canSize) {
-	
 	this.canSize = canSize;
 	this.ctx;
 	this.canvas = document.getElementById('field');
@@ -55,12 +58,15 @@ function Game(canSize) {
 	}
 	this.startTime = new Date();
 	this.timerDisplay = $('#time');
+	this.scoreDisplay = $('#score');
 	this.asteroids = [];
 	this.bullets = [];
+	this.explosions = [];
 	this.ship = new SpaceShip(this);
 	this.addAsteroids(5);
 	this.countDown = 3;
 	this.countDownTime = new Date();
+	this.score = 0;
 }
 
 Game.prototype.levelCountDown = function(){
@@ -74,9 +80,7 @@ Game.prototype.levelCountDown = function(){
 			this.countDown--
 			this.countDownTime = new Date();	
 		}
-
 	}
-	
 }
 
 Game.prototype.calcTime = function(time){
@@ -103,16 +107,18 @@ Game.prototype.draw = function(){
 	  },3000)
   }
   
- 
-  
-  
   this.timerDisplay.text(this.calcTime());
+  this.scoreDisplay.text(this.score);
   
   var aL = this.asteroids.length;
   while(aL--){
 	  this.asteroids[aL].destroyed ? this.asteroids.splice(aL,1) : this.asteroids[aL].draw();
   }
   
+  var eL = this.explosions.length;
+  while(eL--){
+	  this.explosions[eL].destroyed ? this.explosions.splice(eL,1) : this.explosions[eL].draw();
+  }
   
   var bL = this.bullets.length;
   while(bL--){
@@ -125,12 +131,10 @@ Game.prototype.draw = function(){
   this.gameOver();
 }
 
-
-
 Game.prototype.addAsteroids = function(num) {
   for(var i = 0; i < num; i++){
 	var asteroid = new Asteroid(this);
-	while(this.ship.collision([asteroid])){
+	while(this.ship.collision([asteroid], 100)){
 		asteroid = new Asteroid(this);
 	}
     this.asteroids.push(asteroid);

@@ -38,8 +38,11 @@ Bullet.prototype.collision = function(){
 	  var asteroid = this.game.asteroids[i];
 	  if((this.radius + asteroid.radius) >= this.calcDist(asteroid)){
   	  	this.destroyed = true;
+		this.game.explosions.push(new Explosion(this.game, asteroid.center.slice(0)));
+		this.game.score += 100 * this.game.level;
   		asteroid.destroyed = true;
 		if (asteroid.radius/2 > 15){
+			this.game.score -= 50 * this.game.level;
 			this.game.asteroids.push(new Asteroid(this.game, asteroid.center.slice(0), asteroid.radius/2));
 			this.game.asteroids.push(new Asteroid(this.game, asteroid.center.slice(0), asteroid.radius/2));
 		}

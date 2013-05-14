@@ -53,11 +53,12 @@ SpaceShip.prototype.adjustBounds = function() {
 	  this.center[1] = this.game.canSize[1] + this.radius;
 }
 
-SpaceShip.prototype.collision = function(asteroids){
+SpaceShip.prototype.collision = function(asteroids, radius){
 	asteroids = asteroids || this.game.asteroids;
+	radius = radius || this.radius;
 	for(var i = 0, n = asteroids.length; i < n; i++){
 	  asteroid = asteroids[i];
-	  if((this.radius + asteroid.radius) >= this.calcDist(asteroid))
+	  if((radius + asteroid.radius) >= this.calcDist(asteroid))
 	  	return true;
 	}
 	return false;		  
