@@ -19,8 +19,18 @@ var frameRate = 25;
 $(function(){ 
 	
 	game = new Game([900,600]);
+	
+	$("#start").modal('show');
+	$("#start-btn").on('click', function(){
+		game.play = window.setInterval(function(){game.draw()}, frameRate);
+	});
+	$("#restart-btn").on('click', function(){
+		game.replay();
+	});
+	
+	
 
-	game.play = window.setInterval(function(){game.draw()}, frameRate);
+	
 
 	$("body").keydown(function(e) {
 	keyMap[e.keyCode] = true;
@@ -51,22 +61,15 @@ function Game(canSize) {
 	this.ctx;
 	this.canvas = document.getElementById('field');
 	this.play;
-	this.level = 1;
+
 	this.baseAsteroid = 5;
 	if (this.canvas.getContext){
 		this.ctx = this.canvas.getContext('2d');
 	}
-	this.startTime = new Date();
-	this.timerDisplay = $('#time');
+	
+	this.resetValues();
+	
 	this.scoreDisplay = $('#score');
-	this.asteroids = [];
-	this.bullets = [];
-	this.explosions = [];
-	this.ship = new SpaceShip(this);
-	this.addAsteroids(5);
-	this.countDown = 3;
-	this.countDownTime = new Date();
-	this.score = 0;
 }
 
 Game.prototype.levelCountDown = function(){
@@ -107,7 +110,6 @@ Game.prototype.draw = function(){
 	  },3000)
   }
   
-  this.timerDisplay.text(this.calcTime());
   this.scoreDisplay.text(this.score);
   
   var aL = this.asteroids.length;
@@ -143,7 +145,25 @@ Game.prototype.addAsteroids = function(num) {
 
 Game.prototype.gameOver = function(){
   if (this.ship.collision()){
-      alert("Game Over!");
       clearInterval(this.play);
+	  $("#restart").modal('show');
+
   }
+}
+
+Game.prototype.resetValues = function (){
+	this.level = 1;
+	this.startTime = new Date();
+	this.asteroids = [];
+	this.bullets = [];
+	this.explosions = [];
+	this.ship = new SpaceShip(this);
+	this.countDown = 0;
+	this.countDownTime = new Date();
+	this.score = 0;
+}
+
+Game.prototype.replay = function (){
+	this.resetValues();
+	game.play = window.setInterval(function(){game.draw()}, frameRate);
 }

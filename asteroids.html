@@ -7,21 +7,50 @@
 	<!--
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 		-->
-    <link href="css/astroid.css" rel="stylesheet" media="screen">
+    <link href="css/asteroids.css" rel="stylesheet" media="screen">
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
   </head>
   <body>
     <div class="container">
-      <canvas id="field" width="900" height="600"></canvas>
+      <canvas id="field" class="all"width="900" height="600"></canvas>
+  	<div class="stats  all" id="score"></div>
+	  
     </div>
-    <div id="time"></div>
-	<div id="score"></div>
+	
+	
+	<div id="start" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Asteroids!</h3>
+	  </div>
+	  <div class="modal-body">
+	    <p><strong>How to play: </strong>Destroy the asteriods. Turn using the <strong>left</strong> and <strong>right</strong> keys, thrust with the up key, and fire with spacebar.</p>
+	  </div>
+	  <div class="modal-footer">
+	    <div id="start-btn" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" >Play!</div>
+	  </div>
+	</div>
+	
+	<div id="restart" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Game Over!</h3>
+	  </div>
+	  <div class="modal-body">
+	    <p>Good Game!</p>
+	  </div>
+	  <div class="modal-footer">
+	    <div id="restart-btn" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" >Play Again!</div>
+	  </div>
+	</div>
 
 
 	<!--
     <script src="js/bootstrap.min.js"></script>
 		-->
-	<script src="js/underscore-min.js"></script>
 	<script src="jquery-1.9.1.min.js"></script>
+	<script src="js/underscore-min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<script src="projectile.js"></script>
 	<script src="asteroid.js"></script>
 	<script src="bullet.js"></script>

@@ -1,0 +1,14 @@
+.all {
+	position: absolute;
+}
+
+.stats {
+	font-size: 50px;
+	color: white;
+}
+
+#score {
+	position: absolute;
+	top: 5%;
+	left: 19%;
+}
