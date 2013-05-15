@@ -39,12 +39,6 @@ $(function(){
 	case 32:
 	  game.ship.shoot();
 	  break;
-	case 81:
-	  clearInterval(game.play);
-	  break;
-	case 87:
-	  game.play = window.setInterval(function(){game.draw()}, frameRate);
-	  break;
 	default:
 	  console.log(e.keyCode);
 	  break;
